@@ -57,12 +57,13 @@ Vagrant.configure("2") do |config|
           box.vm.provision "shell", run: "always", inline: <<-SHELL
             sudo echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
             systemctl restart sshd
-            sudo echo "net.ipv4.conf.all.forwarding=1" >> /etc/sysctl.conf
-            sudo sysctl -p
             sudo yum install -y iptables-services nc vim net-tools traceroute
             sudo systemctl start iptables && sudo systemctl enable iptables
+            sudo echo "net.ipv4.conf.all.forwarding=1" >> /etc/sysctl.conf
             sudo echo "192.168.0.0/16 via 192.168.255.2 dev eth1" >> /etc/sysconfig/network-scripts/route-eth1
+            sudo sysctl -p
             sudo iptables -t nat -A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE
+            sudo iptables -I FORWARD 1 -o eth1 -j ACCEPT && sudo iptables -I FORWARD 1 -i eth1 -j ACCEPT
             sudo systemctl restart network
             SHELL
         when "centralRouter"
