@@ -10,6 +10,8 @@ Office2----/
 
 #### iptables cheat sheet
 ```
+/sbin/service iptables save   - save config (Centos)
+/etc/sysconfig/iptables       - config file
 iptables --table nat --list   - просмотр таблицы nat
 iptables -t nat -A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE   - пропуск трафика через сервер (+ net.ipv4.conf.all.forwarding=1)
 
