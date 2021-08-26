@@ -31,9 +31,9 @@
 
 ## Sheme: 
 ```
-Office1 ---\
-                   -----> Central --IRouter --> internet
-Office2----/
+Office1Server----> office1Router --->
+                   CentralServer ---> CentralRouter --> InetRouter -> internet
+Office2Server----> office2Router --->
 ```
 
 #### iptables cheats
