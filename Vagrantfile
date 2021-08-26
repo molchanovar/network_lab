@@ -91,7 +91,8 @@ Vagrant.configure("2") do |config|
         case boxname.to_s
         when "inetRouter"
           box.vm.provision "shell", run: "always", inline: <<-SHELL
-            sudo echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+            # sudo echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+            sudo sed -i "s/.*PasswordAuthentication\ no/PasswordAuthentication\ yes/g" /etc/ssh/sshd_config
             sudo systemctl restart sshd
             sudo yum install -y iptables-services nc vim net-tools traceroute
             sudo systemctl start iptables && sudo systemctl enable iptables
@@ -103,7 +104,8 @@ Vagrant.configure("2") do |config|
             SHELL
         when "centralRouter"
           box.vm.provision "shell", run: "always", inline: <<-SHELL
-            sudo echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+            # sudo echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+            sudo sed -i "s/.*PasswordAuthentication\ no/PasswordAuthentication\ yes/g" /etc/ssh/sshd_config
             sudo systemctl restart sshd
             sudo yum install -y vim net-tools traceroute
             sudo echo "net.ipv4.conf.all.forwarding=1" >> /etc/sysctl.conf; sudo sysctl -p
@@ -115,7 +117,8 @@ Vagrant.configure("2") do |config|
             SHELL
         when "centralServer"
           box.vm.provision "shell", run: "always", inline: <<-SHELL
-            sudo echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+            sudo echo ".*PasswordAuthentication yes" >> /etc/ssh/sshd_config
+            sudo sed -i "s/PasswordAuthentication\ no/PasswordAuthentication\ yes/g" /etc/ssh/sshd_config
             sudo systemctl restart sshd
             sudo yum install -y vim net-tools traceroute
             sudo echo "DEFROUTE=no" >> /etc/sysconfig/network-scripts/ifcfg-eth0 
@@ -124,6 +127,8 @@ Vagrant.configure("2") do |config|
             SHELL
         when "office1Router"
           box.vm.provision "shell", run: "always", inline: <<-SHELL
+            sudo sed -i "s/.*PasswordAuthentication\ no/PasswordAuthentication\ yes/g" /etc/ssh/sshd_config
+            sudo systemctl restart sshd
             sudo echo "net.ipv4.conf.all.forwarding=1" >> /etc/sysctl.conf; sudo sysctl -p
             echo "DEFROUTE=no" >> /etc/sysconfig/network-scripts/ifcfg-eth0
             echo "GATEWAY=192.168.254.1" >> /etc/sysconfig/network-scripts/ifcfg-eth1
@@ -131,12 +136,16 @@ Vagrant.configure("2") do |config|
             SHELL
         when "office1Server"
           box.vm.provision "shell", run: "always", inline: <<-SHELL
+            sudo sed -i "s/.*PasswordAuthentication\ no/PasswordAuthentication\ yes/g" /etc/ssh/sshd_config
+            sudo systemctl restart sshd
             echo "DEFROUTE=no" >> /etc/sysconfig/network-scripts/ifcfg-eth0
             echo "GATEWAY=192.168.2.1" >> /etc/sysconfig/network-scripts/ifcfg-eth1
             sudo systemctl restart network
             SHELL
         when "office2Router"
           box.vm.provision "shell", run: "always", inline: <<-SHELL
+            sudo sed -i "s/.*PasswordAuthentication\ no/PasswordAuthentication\ yes/g" /etc/ssh/sshd_config
+            sudo systemctl restart sshd
             sudo echo "net.ipv4.conf.all.forwarding=1" >> /etc/sysctl.conf; sudo sysctl -p
             echo "DEFROUTE=no" >> /etc/sysconfig/network-scripts/ifcfg-eth0
             echo "GATEWAY=192.168.253.1" >> /etc/sysconfig/network-scripts/ifcfg-eth1
@@ -144,6 +153,8 @@ Vagrant.configure("2") do |config|
             SHELL
        when "office2Server"
           box.vm.provision "shell", run: "always", inline: <<-SHELL
+            sudo sed -i "s/.*PasswordAuthentication\ no/PasswordAuthentication\ yes/g" /etc/ssh/sshd_config
+            sudo systemctl restart sshd
             echo "DEFROUTE=no" >> /etc/sysconfig/network-scripts/ifcfg-eth0
             echo "GATEWAY=192.168.1.1" >> /etc/sysconfig/network-scripts/ifcfg-eth1
             sudo systemctl restart network
