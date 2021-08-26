@@ -19,7 +19,6 @@ MACHINES = {
                    {ip: '192.168.253.2', adapter: 7, netmask: "255.255.255.252", virtualbox__intnet: "office2-net"},
                 ]
   },
-  
   :centralServer => {
         :box_name => "centos/7",
         :net => [
@@ -28,7 +27,6 @@ MACHINES = {
                    {adapter: 4, auto_config: false, virtualbox__intnet: true},
                 ]
   },
-
   :office1Router => {
         :box_name => "centos/7",
         :net => [
@@ -39,14 +37,12 @@ MACHINES = {
                    {ip: '192.168.2.193', adapter: 6, netmask: "255.255.255.192", virtualbox__intnet: "hardware-office1-net"}
                 ]
   },
-
   :office1Server => {
         :box_name => "centos/7",
         :net => [
                    {ip: '192.168.2.2', adapter: 2, netmask: "255.255.255.192", virtualbox__intnet: "dev-office1-net"}
                 ]
- },
-
+  },
   :office2Router => {
         :box_name => "centos/7",
         :net => [
@@ -55,14 +51,13 @@ MACHINES = {
                    {ip: '192.168.1.129', adapter: 4, netmask: "255.255.255.192", virtualbox__intnet: "testservers-office2-net"},
                    {ip: '192.168.1.193', adapter: 5, netmask: "255.255.255.192", virtualbox__intnet: "hardware-office2-net"}
                 ]
- },
-
+  },
   :office2Server => {
         :box_name => "centos/7",
         :net => [
                    {ip: '192.168.1.2', adapter: 2, netmask: "255.255.255.192", virtualbox__intnet: "dev-office2-net"}
                 ]
- }
+  }
 
 }
 
