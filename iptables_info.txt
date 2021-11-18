@@ -1,0 +1,30 @@
+  Accept traffic from port 8080/443
+sudo iptables -A INPUT -p tcp -m multiport --dports 8080,443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+sudo iptables -A OUTPUT -p tcp -m multiport --dports 8080,443 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
+Change line priority -> iptables -nL --line-numbers
+
+iptables -nL --line-numbers
+  Chain INPUT (policy ACCEPT)
+num  target     prot opt source               destination
+1    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+2    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0
+3    INPUT_direct  all  --  0.0.0.0/0            0.0.0.0/0
+4    INPUT_ZONES_SOURCE  all  --  0.0.0.0/0            0.0.0.0/0
+5    INPUT_ZONES  all  --  0.0.0.0/0            0.0.0.0/0
+6    DROP       all  --  0.0.0.0/0            0.0.0.0/0            ctstate INVALID
+7    REJECT     all  --  0.0.0.0/0            0.0.0.0/0            reject-with icmp-host-prohibited
+8    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            multiport dports 8080,443 ctstate NEW,ESTABLISHED
+9    ACCEPT     tcp  --  0.0.0.0/0            0.0.0.0/0            multiport dports 8080,443 ctstate NEW,ESTABLISHED
+
+
+  Delete records: 
+iptables -D INPUT 9; iptables -D INPUT 8
+iptables -D OUTPUT 4; iptables -D OUTPUT 3
+
+  Input record with line number: 
+iptables -I INPUT 6 -p tcp -m multiport --dports 8080,443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -I OUTPUT 2 -p tcp -m multiport --dports 8080,443 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
+  Save iptables (CentOS 7)
+iptables-save > /etc/sysconfig/iptables
